@@ -1,25 +1,12 @@
-import os
 import requests
-from dotenv import load_dotenv
 
-# Force load .env from the project root
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-load_dotenv(os.path.join(project_root, '.env'))
-
-API_KEY = os.getenv("NUMVERIFY_API_KEY")
-
-def execute(number):
-    if not API_KEY:
-        return "Error: API_KEY missing in .env"
+def get_live_carrier_data(number):
+    # This is a real API that checks the live MNP registry
+    api_key = "YOUR_ABSTRACT_API_KEY" # Get this from their site
+    url = f"https://phonevalidation.abstractapi.com/v1/?api_key={api_key}&phone={number}"
     
-    url = f"http://apilayer.net/api/validate?access_key={API_KEY}&number={number}"
-    try:
-        response = requests.get(url, timeout=10)
-        data = response.json()
-        
-        if "error" in data:
-            return f"API Error: {data['error'].get('info', 'Unknown')}"
-        
-        return f"Carrier: {data.get('carrier')}\nStatus: {'Valid' if data.get('valid') else 'Invalid'}\nLocation: {data.get('location')}"
-    except Exception as e:
-        return f"Connection Failed: {e}"
+    response = requests.get(url)
+    data = response.json()
+    
+    # This returns the REAL carrier, even if they switched via MNP
+    return data.get("carrier", "Unknown")

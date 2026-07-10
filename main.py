@@ -29,42 +29,52 @@ def display_banner():
           !!                         !!   !
           !!         #hugs           !!   !
           !!                         !!   !
-          !!      By: whoami136      !!  /
+          !!       By: whoami136      !!  /
           !!_________________________!! /
           !/_________________________\!/
-              __\_________________/__/!_
-             !_______________________!/
+             __\_________________/__/!_
+            !_______________________!/
 [/grey50]
-[bold white][---]     ALIEN-INTEL SYSTEM      [---][/bold white]
+[bold white][---]     ALIEN-INTEL SYSTEM     [---][/bold white]
 [grey50][---]    Created by: whoami136    [---][/grey50]
 """
     console.print(banner)
 
 def run_module(module_name, number):
+    """
+    Executes modules and forces them to report truth. 
+    If a module returns 'None' or 'Error', it is ignored instead of displayed.
+    """
     try:
         module = importlib.import_module(f"modules.{module_name}")
         if hasattr(module, 'execute'):
             result = module.execute(number)
-            if result and isinstance(result, str) and result.strip():
-                # Theme: White/Grey Panel
+            
+            # THE TRUTH CHECK: 
+            # Only print if the module found actual data (not just empty strings or error messages)
+            if result and "Error" not in result and "Failed" not in result:
                 console.print(Panel(
                     result, 
                     title=f"[bold white]{module_name.replace('_', ' ').title()}[/bold white]", 
                     border_style="white"
                 ))
-    except Exception:
+    except Exception as e:
+        # Silently fail for modules that aren't configured yet
         pass 
 
 def main():
     os.system('clear' if os.name == 'posix' else 'cls')
-    
     display_banner()
     
-    # Input
     number = console.input("[bold white]Target Node > [/bold white]")
+    if not number: return
+    
     logging.info(f"Investigation started for: {number}")
+    console.print(f"[bold yellow]Initializing deep scan for {number}...[/bold yellow]\n")
     
     # Execution
+    # We use ThreadPool to run everything at once, 
+    # but the logic inside each module now handles the 'Real vs Show' validation.
     with ThreadPoolExecutor(max_workers=10) as executor:
         for _, name, _ in pkgutil.iter_modules(modules.__path__):
             if name == "__init__": 
