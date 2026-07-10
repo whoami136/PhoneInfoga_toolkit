@@ -37,7 +37,6 @@ html5lib==1.1
 idna==3.11
 ifaddr==0.2.0
 iniconfig==2.3.0
-instaloader @ file:///home/kali/instaloader
 ipython==9.13.0
 ipython_pygments_lexers==1.1.1
 itsdangerous==2.2.0
