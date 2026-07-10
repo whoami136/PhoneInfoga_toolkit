@@ -33,17 +33,30 @@ A modular, high-performance OSINT investigation toolkit designed for terminal-ba
 
    Bash
    python3 main.py
+
 Enter your target node when prompted:
+
 Target Node > +8801XXXXXXXXXX
+
 📁 Project Structure
+
 Plaintext
+
 .
+
 ├── main.py              # Core orchestration engine
+
 ├── modules/             # Intelligence modules
+
 ├── output/              # Log files & session data
+
 ├── requirements.txt     # Dependency list
+
 └── .env                 # API Credentials (hidden)
+
 ⚠️ Disclaimer
-This tool is for educational and authorized testing purposes only. The creator assumes no liability for misuse. Always ensure you have permission to perform OSINT activities on the target provided.
+
+This tool is for educational and authorized testing purposes only. The creator assumes no liability for misuse. Always ensure you have permission 
+to perform OSINT activities on the target provided.
 
 Created by: whoami136
